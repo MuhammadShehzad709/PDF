@@ -14,7 +14,7 @@ namespace pdf.Controllers
         {
             this.service = _service;
         }
-        [HttpPost]
+        [HttpPost("UploadPdf")]
         public async Task<IActionResult> UploadPdf(IFormFile file)
         {
             if (file == null || file.Length == 0)
