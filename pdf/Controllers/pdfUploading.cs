@@ -6,11 +6,11 @@ namespace pdf.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class pdfUploading : ControllerBase
+    public class pdfUploadingController: ControllerBase
     {
         private readonly IFileUploadService service;
 
-        public pdfUploading(IFileUploadService _service)
+        public pdfUploadingController(IFileUploadService _service)
         {
             this.service = _service;
         }
