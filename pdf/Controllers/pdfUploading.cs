@@ -23,15 +23,21 @@ namespace pdf.Controllers
             }
             try
             {
-                var filePath = await service.UploadPdfAsync(file);
-                return Ok(new { path = filePath });
+                var relativePath = await service.UploadPdfAsync(file);
+
+                // Base URL generate karna
+                var baseUrl = $"{Request.Scheme}://{Request.Host}";
+
+                // Full URL combine karna
+                var fullUrl = baseUrl + relativePath;
+
+                return Ok(new { path = fullUrl });
             }
             catch (Exception ex)
             {
-
                 return BadRequest($"{ex.Message}");
             }
-
         }
+
     }
 }
