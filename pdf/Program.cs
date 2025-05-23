@@ -10,14 +10,19 @@ namespace pdf
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddScoped<IFileUploadService, FileUploadService>();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            // Create UploadedFiles folder if it doesn't exist
+            var folderPath = Path.Combine(builder.Environment.ContentRootPath, "UploadedFiles");
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -25,17 +30,16 @@ namespace pdf
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(
-         Path.Combine(builder.Environment.ContentRootPath, "UploadedFiles")),
+                FileProvider = new PhysicalFileProvider(folderPath),
                 RequestPath = "/files"
             });
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
